@@ -3,7 +3,8 @@ import {
     View, 
     Text,
     ListView,
-    StyleSheet
+    StyleSheet,
+    Image
 } from 'react-native'
 import Vote from './Vote'
 import Config from './../config'
@@ -21,6 +22,12 @@ export default class List extends Component {
         this.renderRow = this.renderRow.bind(this)
     }
 
+    componentWillMount() {
+        navigator.geolocation.getCurrentPosition(position => {
+            console.log(position)
+        })
+    }
+
     componentDidMount() {
         fetch(Config.API.get('regles'))
             .then((response) => response.json())
@@ -32,6 +39,10 @@ export default class List extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <Image 
+                    source={{ uri : "https://www.wecomfrom.com/images/icons/wecky.png" }} 
+                    style={{ width : 150, height : 86, alignSelf : "center", marginBottom : 20 }} />
+                    
                 <ListView
                     enableEmptySections={true} 
                     dataSource={this.state.ds.cloneWithRows(this.state.rules)}
@@ -60,7 +71,8 @@ const styles = StyleSheet.create({
     container : {
         flex : 1,
         backgroundColor : "#eee",
-        padding : 10
+        padding : 10,
+        justifyContent : "center",
     },
     row : {
         borderColor : "#ddd",

@@ -3,6 +3,7 @@ import { Navigator } from 'react-native'
 import List from './List'
 import Add from './Add'
 import Login from './Login'
+import Setting from './Setting'
 
 export default class App extends Component {
 
@@ -15,7 +16,7 @@ export default class App extends Component {
     render() {
         return (
             <Navigator
-                initialRoute={{ login : true }}
+                initialRoute={{ setting : true }}
                 configureScene={route => route.SceneConfigs ? route.SceneConfigs : Navigator.SceneConfigs.FloatFromBottomAndroid}
                 renderScene={this.renderScene}
              />
@@ -26,6 +27,7 @@ export default class App extends Component {
         if(route.rules) return <List />
         if(route.add) return <Add navigator={navigator} />
         if(route.login) return <Login navigator={navigator} />
+        if(route.setting) return <Setting navigator={navigator} />
     }
 
 }
