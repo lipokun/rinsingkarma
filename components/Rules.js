@@ -45,7 +45,11 @@ export default class Rules extends Component {
                   method : 'POST',
                   body : JSON.stringify({ token : token })
               }).then(response => response.json()).then(result => {
-                  this.setState({ rules : result.rules })
+                  if(result.success) {
+                    this.setState({ rules : result.rules })
+                  }else{
+                    console.log(result.message)
+                  }
               })
           }
       })

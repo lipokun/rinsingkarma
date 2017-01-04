@@ -49,7 +49,11 @@ export default class Play extends Component {
                   method : 'POST',
                   body : JSON.stringify({ token : token })
               }).then(response => response.json()).then(result => {
+                if(result.success) {
                   this.setState({ rules : result.rules })
+                }else{
+                  console.log(result.message)
+                }
               })
           }
       })
@@ -60,10 +64,10 @@ export default class Play extends Component {
             <View style={styles.container}>
                 <Text style={styles.textCenter}>As-tu déjà réalisé ces actions dans ta vie</Text>
                 <ListView
-                    enableEmptySections={true}
-                    dataSource={this.state.ds.cloneWithRows(this.state.rules)}
-                    renderRow={this.renderRow}
-                    renderFooter={this.footerLV}/>
+                  enableEmptySections={true}
+                  dataSource={this.state.ds.cloneWithRows(this.state.rules)}
+                  renderRow={this.renderRow}
+                  renderFooter={this.footerLV}/>
             </View>
         )
     }
