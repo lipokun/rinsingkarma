@@ -1,3 +1,8 @@
+//login.js This component provides 3 basic features for now:
+//- connexion
+//- autoconnexion via token storage
+//- account creation (with login unicity checking)
+
 import React, { Component } from 'react'
 import {
     View,
@@ -19,6 +24,7 @@ export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            //I defined it manualy here for development needs
             login : "martin",
             password : "123456",
             pending : false,
@@ -26,12 +32,13 @@ export default class Login extends Component {
             errorMessage : ""
         }
 
-        //système de stockage (ici: token user)
+        //token storage system (here: token user)
         this.StorageManager = new StorageManager()
 
         this.onSubmit = this.onSubmit.bind(this)
     }
 
+    //before the component is monted: we try an autoconnexion via token
     componentWillMount() {
         this.setState({ pending : true })
         this.StorageManager.set('@User:played', "false").then(() => {
@@ -54,6 +61,7 @@ export default class Login extends Component {
         })
     }
 
+    //live check if username is uniq (before creating account)
     updateUsername(userName) {
         this.setState({login : userName })
         if(this.state.type == "inscription") {
@@ -73,6 +81,7 @@ export default class Login extends Component {
         }
     }
 
+    //provide form for connexion or for account creation (depending on state.type)
     onSubmit() {
         let endpoint = (this.state.type == "connexion") ? "/login/connexion" : "/login/createAccount";
 
@@ -95,6 +104,7 @@ export default class Login extends Component {
         })
     }
 
+    //have different states depending user touch connexion or inscription button
     render() {
 
         if(this.state.pending) {

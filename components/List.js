@@ -1,3 +1,5 @@
+//list.js I replaced this component (depreciated) by the component Rules.js
+
 import React, { Component } from 'react'
 import {
     View,

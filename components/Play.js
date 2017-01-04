@@ -1,3 +1,6 @@
+//Play.js a view in which the player will play the game to evaluate his/her karma
+//it use the component Jouer and we try the compenent ListView for lazyloading
+
 import React, { Component } from 'react'
 import {
     View,
@@ -29,6 +32,8 @@ export default class Play extends Component {
         this.footerLV = this.footerLV.bind(this)
         this.goKarma = this.goKarma.bind(this)
     }
+
+    // Juste un petit test de geoloc perso
 
     // componentWillMount() {
     //     navigator.geolocation.getCurrentPosition(position => {

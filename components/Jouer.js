@@ -1,3 +1,6 @@
+//Jouer.js : this component make a link between a button type (jouer) and its action
+//when you click on this component, it will update the API DB to tell if you have done or not one or another action
+
 import React, { Component } from 'react'
 import {
     View,
@@ -19,11 +22,11 @@ export default class Jouer extends Component {
     }
 
     onPlay() {
-        // fetch(Config.API.get(''))
+
         const jouer = this.props.non ? -1 : 1
+        //get connexion token in StorageManager if it exists
         this.StorageManager.get('@User:token').then(token => {
             if(token) {
-                console.log("Le token envoyé: "+token)
                 fetch(Config.API.get('regles/playRule'), {
                     method : 'POST',
                     body : JSON.stringify({
@@ -34,9 +37,8 @@ export default class Jouer extends Component {
                 }).then(response => response.json()).then(result => {
                   if(result.success) {
                       this.StorageManager.set('@User:token', result.newtoken)
-                      //faire disparaitre la règle de la liste
-                      console.log("Le token reçu: "+result.newtoken)
-                      alert("c'est noté :)")
+                      // **ToImprove** This is a basic test for now. I will provide a better feedback to the player
+                      alert("c'est noté :)")//
                   }
                 })
             } else {

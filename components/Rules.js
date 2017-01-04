@@ -1,3 +1,5 @@
+//Rules.js allow players to vote for rules (good Karma or bad Karma)
+
 import React, { Component } from 'react'
 import {
     View,

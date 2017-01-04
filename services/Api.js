@@ -1,3 +1,5 @@
+//Api.js to communicate with my api
+
 'use strict';
 
 const BASE_URL = "http://www.risingkarma.com";

@@ -1,3 +1,5 @@
+//Propose.js allow the player to propose a new rule
+
 import React, { Component } from 'react'
 import {
     View,

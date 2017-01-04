@@ -1,3 +1,5 @@
+//Config.js to access variables everywhere in the app
+
 export default {
 
     API : {

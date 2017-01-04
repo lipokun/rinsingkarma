@@ -1,3 +1,5 @@
+//Vote.js is a component to vote a rule (morale or not moral)
+
 import React, { Component } from 'react'
 import {
     View,

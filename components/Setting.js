@@ -1,3 +1,6 @@
+//Setting.js just a test to check some feature in react native
+//no link at all with karma
+
 import React, { Component } from 'react'
 
 import {

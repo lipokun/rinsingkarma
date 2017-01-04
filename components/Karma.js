@@ -1,3 +1,6 @@
+//Karma.js is a view in wich I compute the karma of the player
+//The illustration pictures shown will change function of the score (3 possible states)
+
 import React, { Component } from 'react'
 import {
   View,
@@ -36,12 +39,15 @@ export default class Karma extends Component {
     this.setState({ pending : true })
 
     this.StorageManager.get('@User:played').then(played => {
+      //The screen can be called from two views and will take two different states
+      //Difference is very small so I decided to provide two states of the same view
       if("true"===played){
         this.setState({routeToRules : true})
         this.setState({labelBtn : "Aide ton prochain à évaluer son Karma"})
       }
     })
 
+    //get the connexion token in StorageManager if it exists
     this.StorageManager.get('@User:token').then(token => {
       if(token) {
         // console.log('le token en cours: '.token)
@@ -53,6 +59,7 @@ export default class Karma extends Component {
             this.StorageManager.set('@User:token', result.newtoken).then(() => {
               this.setState({ karma : result.karma })
               this.setState({ pending : false })
+              //show a pick taking into account the score
               if(result.karma != 0){
                 if(result.karma > 0 ){
                   this.setState({ illus : Config.API.get('assets/img/karmaBonCenter.JPG') })
@@ -109,6 +116,7 @@ export default class Karma extends Component {
    )
   }
 
+  //just a sort of dynamic link that depend of the state routeToRules
   goPlay(){
     if(this.state.routeToRules){
       this.props.navigator.push({ rules : true })

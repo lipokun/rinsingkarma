@@ -1,3 +1,5 @@
+//App.js : this is the app rooter
+
 import React, { Component } from 'react'
 import { Navigator } from 'react-native'
 import List from './List'

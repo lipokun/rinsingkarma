@@ -1,3 +1,5 @@
+//Loader.js a native loader I will use in many views
+
 import React, { Component } from 'react'
 import { View, StyleSheet, ActivityIndicator } from 'react-native'
 

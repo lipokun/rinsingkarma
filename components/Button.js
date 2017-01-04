@@ -1,9 +1,11 @@
+//Button.js is a component I will reuse in many views
+
 import React, { Component } from 'react'
-import { 
+import {
     View,
     StyleSheet,
-    Text, 
-    TouchableOpacity 
+    Text,
+    TouchableOpacity
 } from 'react-native'
 import Config from './../config'
 
@@ -23,7 +25,7 @@ export default class Button extends Component {
         return (
             <TouchableOpacity
                 onPress={this.onPress}>
-                <View 
+                <View
                     style={[styles.button, this.props.style]}>
                     <Text style={styles.text}>{this.props.label.toUpperCase()}</Text>
                 </View>

@@ -1,3 +1,6 @@
+//Ranking.js give the player rank
+//and show the first player up and the first player after him in the ranking tab
+
 import React, {Component} from 'react'
 import {
   View,

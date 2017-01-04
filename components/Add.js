@@ -1,9 +1,11 @@
+//add.js composant déprécié
+
 import React, { Component } from 'react'
-import { 
+import {
     View,
     StyleSheet,
-    Text, 
-    TouchableOpacity 
+    Text,
+    TouchableOpacity
 } from 'react-native'
 
 export default class Add extends Component {
