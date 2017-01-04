@@ -8,33 +8,35 @@ import {
 import Config from './../config'
 import StorageManager from './../services/StorageManager'
 
-export default class Vote extends Component {
+export default class Jouer extends Component {
 
     constructor(props) {
         super(props)
 
         this.StorageManager = new StorageManager()
-        this.onVote = this.onVote.bind(this)
+        this.onPlay = this.onPlay.bind(this)
         this.renderText = this.renderText.bind(this)
     }
 
-    onVote() {
+    onPlay() {
         // fetch(Config.API.get(''))
-        const vote = this.props.non ? -1 : 1
+        const jouer = this.props.non ? -1 : 1
         this.StorageManager.get('@User:token').then(token => {
             if(token) {
-                fetch(Config.API.get('regles/vote'), {
+                console.log("Le token envoyé: "+token)
+                fetch(Config.API.get('regles/playRule'), {
                     method : 'POST',
                     body : JSON.stringify({
                       token : token,
-                      vote : vote,
+                      vote : jouer,
                       idrule : this.props.idRule
                     })
                 }).then(response => response.json()).then(result => {
                   if(result.success) {
                       this.StorageManager.set('@User:token', result.newtoken)
                       //faire disparaitre la règle de la liste
-                      alert("Merci por ton vote :)")
+                      console.log("Le token reçu: "+result.newtoken)
+                      alert("c'est noté :)")
                   }
                 })
             } else {
@@ -57,7 +59,7 @@ export default class Vote extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity
-                    onPress={this.onVote}>
+                    onPress={this.onPlay}>
                     <View style={styles.button}>
                         {this.renderText()}
                     </View>

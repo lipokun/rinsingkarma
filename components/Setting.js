@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import ImagePicker from 'react-native-image-picker'
 
-import { 
-    TouchableOpacity, 
-    View, 
+import {
+    TouchableOpacity,
+    View,
     StyleSheet,
     Text
-} from 'react-native' 
+} from 'react-native'
 import Button from './Button'
 
 const options = {
@@ -38,7 +37,7 @@ export default class Setting extends Component {
         return (
             <View style={styles.container}>
                 <Button
-                    onPress={this.openPicker} 
+                    onPress={this.openPicker}
                     label="Upload" />
             </View>
         )

@@ -5,15 +5,20 @@ import {
     ListView,
     StyleSheet,
     Image,
-    Dimensions
+    TouchableOpacity
 } from 'react-native'
-import Vote from './Vote'
+import Jouer from './Jouer'
 import Config from './../config'
+import StorageManager from './../services/StorageManager'
+import Button from './Button'
 
-export default class List extends Component {
+export default class Play extends Component {
 
     constructor(props) {
         super(props)
+
+        //système de stockage (ici: token user)
+        this.StorageManager = new StorageManager()
 
         this.state = {
             rules : [],
@@ -21,8 +26,8 @@ export default class List extends Component {
         }
 
         this.renderRow = this.renderRow.bind(this)
-        this.headerLV = this.headerLV.bind(this)
         this.footerLV = this.footerLV.bind(this)
+        this.goKarma = this.goKarma.bind(this)
     }
 
     // componentWillMount() {
@@ -32,22 +37,28 @@ export default class List extends Component {
     // }
 
     componentDidMount() {
-        fetch(Config.API.get('regles'))
-            .then((response) => response.json())
-            .then((rules) => {
-                this.setState({ rules : rules })
-            })
+      this.StorageManager.get('@User:token').then(token => {
+          if(token) {
+              console.log("Le token envoyé: "+token)
+              fetch(Config.API.get('regles/RulesForUser'), {
+                  method : 'POST',
+                  body : JSON.stringify({ token : token })
+              }).then(response => response.json()).then(result => {
+                  this.setState({ rules : result.rules })
+              })
+          }
+      })
     }
 
     render() {
         return (
             <View style={styles.container}>
-                  <ListView
-                      enableEmptySections={true}
-                      dataSource={this.state.ds.cloneWithRows(this.state.rules)}
-                      renderRow={this.renderRow}
-                      renderHeader={this.headerLV}
-                      renderFooter={this.footerLV} />
+                <Text style={styles.textCenter}>As-tu déjà réalisé ces actions dans ta vie</Text>
+                <ListView
+                    enableEmptySections={true}
+                    dataSource={this.state.ds.cloneWithRows(this.state.rules)}
+                    renderRow={this.renderRow}
+                    renderFooter={this.footerLV}/>
             </View>
         )
     }
@@ -57,29 +68,27 @@ export default class List extends Component {
             <View
                 key={index}
                 style={styles.row}>
-                <Vote down idRule={rule.id}/>
+                <Jouer non idRule={rule.id}/>
                 <View style={styles.ruleInfo}>
                     <Text style={styles.textCenter}>{rule.title}</Text>
                 </View>
-                <Vote up idRule={rule.id}/>
+                <Jouer oui idRule={rule.id}/>
             </View>
         )
     }
 
-    headerLV(){
+    footerLV(){
       return(
-        <Image
-            source={{ uri : "http://www.risingkarma.com/assets/img/karmaTop.JPG" }}
-            style={styles.imgHeaderFooter} />
+        <Button
+            onPress={this.goKarma}
+            label="Calculer mon Karma" />
       )
     }
 
-    footerLV(){
-      return(
-        <Image
-            source={{ uri : "http://www.risingkarma.com/assets/img/karmaBottom.JPG" }}
-            style={styles.imgHeaderFooter} />
-      )
+    goKarma(){
+      this.StorageManager.set('@User:played', "true").then(() => {
+        this.props.navigator.push({karma : true})
+      })
     }
 
 }
@@ -108,9 +117,5 @@ const styles = StyleSheet.create({
     },
     textCenter : {
         textAlign : "center"
-    },
-    imgHeaderFooter: {
-      width : Dimensions.get('window').width,
-      height: 80
     }
 })

@@ -5,15 +5,20 @@ import {
     ListView,
     StyleSheet,
     Image,
-    Dimensions
+    TouchableOpacity
 } from 'react-native'
 import Vote from './Vote'
 import Config from './../config'
+import StorageManager from './../services/StorageManager'
+import Button from './Button'
 
-export default class List extends Component {
+export default class Rules extends Component {
 
     constructor(props) {
         super(props)
+
+        //système de stockage (ici: token user)
+        this.StorageManager = new StorageManager()
 
         this.state = {
             rules : [],
@@ -21,7 +26,7 @@ export default class List extends Component {
         }
 
         this.renderRow = this.renderRow.bind(this)
-        this.headerLV = this.headerLV.bind(this)
+        this.goPropose = this.goPropose.bind(this)
         this.footerLV = this.footerLV.bind(this)
     }
 
@@ -32,22 +37,28 @@ export default class List extends Component {
     // }
 
     componentDidMount() {
-        fetch(Config.API.get('regles'))
-            .then((response) => response.json())
-            .then((rules) => {
-                this.setState({ rules : rules })
-            })
+      this.StorageManager.get('@User:token').then(token => {
+          if(token) {
+              fetch(Config.API.get('regles/virginsRules'), {
+                  method : 'POST',
+                  body : JSON.stringify({ token : token })
+              }).then(response => response.json()).then(result => {
+                  this.setState({ rules : result.rules })
+              })
+          }
+      })
     }
 
     render() {
         return (
             <View style={styles.container}>
-                  <ListView
-                      enableEmptySections={true}
-                      dataSource={this.state.ds.cloneWithRows(this.state.rules)}
-                      renderRow={this.renderRow}
-                      renderHeader={this.headerLV}
-                      renderFooter={this.footerLV} />
+                <Text style={styles.textCenter}>Ces règles te semblent-elles morales ?</Text>
+
+                <ListView
+                    enableEmptySections={true}
+                    dataSource={this.state.ds.cloneWithRows(this.state.rules)}
+                    renderRow={this.renderRow}
+                    renderFooter={this.footerLV} />
             </View>
         )
     }
@@ -57,29 +68,26 @@ export default class List extends Component {
             <View
                 key={index}
                 style={styles.row}>
-                <Vote down idRule={rule.id}/>
+                <Vote non idRule={rule.id}/>
                 <View style={styles.ruleInfo}>
                     <Text style={styles.textCenter}>{rule.title}</Text>
                 </View>
-                <Vote up idRule={rule.id}/>
+                <Vote oui idRule={rule.id}/>
             </View>
         )
     }
 
-    headerLV(){
+    footerLV(){
       return(
-        <Image
-            source={{ uri : "http://www.risingkarma.com/assets/img/karmaTop.JPG" }}
-            style={styles.imgHeaderFooter} />
+        <Button
+            label="Propose une règle"
+            onPress={this.goPropose} />
       )
     }
 
-    footerLV(){
-      return(
-        <Image
-            source={{ uri : "http://www.risingkarma.com/assets/img/karmaBottom.JPG" }}
-            style={styles.imgHeaderFooter} />
-      )
+    goPropose(){
+      this.props.navigator.push({ goPropose : true })
+      // console.log({ propose : true })
     }
 
 }
@@ -108,9 +116,5 @@ const styles = StyleSheet.create({
     },
     textCenter : {
         textAlign : "center"
-    },
-    imgHeaderFooter: {
-      width : Dimensions.get('window').width,
-      height: 80
     }
 })
