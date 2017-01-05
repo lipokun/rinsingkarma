@@ -1,5 +1,5 @@
 //Jouer.js : this component make a link between a button type (jouer) and its action
-//when you click on this component, it will update the API DB to tell if you have done or not one or another action
+//when you click on this component, it will update the API DB to tell if you have done or not one another action
 
 import React, { Component } from 'react'
 import {

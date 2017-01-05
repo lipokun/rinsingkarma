@@ -25,8 +25,8 @@ export default class Login extends Component {
         super(props)
         this.state = {
             //I defined it manualy here for development needs
-            login : "martin",
-            password : "123456",
+            login : "",
+            password : "",
             pending : false,
             type : "connexion",
             errorMessage : ""
